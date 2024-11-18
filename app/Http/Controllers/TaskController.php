@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskFilterRequest;
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\FilterTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Task;
-use App\Http\Requests\AsssignUserToTaskRequest;
+use App\Http\Requests\AssignUserToTaskRequest;
+use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Services\TaskService;
-use App\Http\Resources\UserResource;
 class TaskController
 {
     public function index()
@@ -17,9 +17,11 @@ class TaskController
     }
 
 
-    public function store(TaskRequest $request)
+    public function store(StoreTaskRequest $request)
     {
-        return Task::create($request->all());
+
+        $task = TaskService::createTask($request);
+        return TaskResource::make($task);
     }
 
 
@@ -29,8 +31,9 @@ class TaskController
     }
 
 
-    public function update(TaskRequest $request, string $id)
+    public function update(UpdateTaskRequest $request, string $id)
     {
+        $task = TaskService::updateTask($request, $id);
         return Task::findOrFail($id)->update($request->all());
     }
 
@@ -38,12 +41,18 @@ class TaskController
     {
         return Task::findOrFail($id)->delete();
     }
-    public function assign(AsssignUserToTaskRequest $request)
+    public function assign(AssignUserToTaskRequest $request, string $taskId)
     {
-        $task = TaskService::assignUserToTask($request->task_id, $request->user_email);
-        return TaskResource::make($task->load('users'));
+        try {
+            $task = TaskService::assignUserToTask($taskId, $request->users_email);
+        } catch (\Exception $e) {
+            \Log::error($e->getMessage());
+            return response()->json(['error' => $e->getMessage()], );
+        }
+        return TaskResource::make($task);
+
     }
-    public function filter(TaskFilterRequest $request)
+    public function filter(FilterTaskRequest $request)
     {
         $tasks = TaskService::filter($request);
         return TaskResource::collection($tasks);

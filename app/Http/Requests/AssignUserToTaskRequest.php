@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AsssignUserToTaskRequest extends FormRequest
+class AssignUserToTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class AsssignUserToTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'task_id' => 'required|exists:tasks,id',
-            'user_email' => 'required|email|exists:users,email',
+            'users_email' => 'required|array',
+            'users_email.*' => 'required|email|exists:users,email',
         ];
     }
 }

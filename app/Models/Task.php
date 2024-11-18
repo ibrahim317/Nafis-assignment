@@ -15,7 +15,7 @@ class Task extends Model
         'status',
     ];
     protected $casts = [
-        'due_date' => 'datetime',
+        'due_date' => 'datetime:Y-m-d H:i:s',
     ];
     public function users()
     {

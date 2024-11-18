@@ -2,13 +2,33 @@
 
 namespace App\Http\Services;
 
-use App\Http\Requests\TaskFilterRequest;
+use App\Http\Requests\FilterTaskRequest;
 use App\Models\Task;
 use App\Models\User;
 
 class TaskService
 {
-    public static function filter(TaskFilterRequest $request)
+    public static function createTask($request)
+    {
+        $task = new Task();
+        $task->title = $request->title;
+        $task->description = $request->description;
+        $task->due_date = $request->due_date;
+        $task->status = $request->status;
+        $task->save();
+        return $task;
+    }
+    public static function updateTask($request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->title = $request->title ?? $task->title;
+        $task->description = $request->description ?? $task->description;
+        $task->due_date = $request->due_date ?? $task->due_date;
+        $task->status = $request->status ?? $task->status;
+        $task->save();
+        return $task;
+    }
+    public static function filter(FilterTaskRequest $request)
     {
         $query = Task::query();
 
@@ -29,9 +49,16 @@ class TaskService
     }
     public static function assignUserToTask($taskId, $userEmail)
     {
-        $task = Task::findOrFail($taskId);
-        $user = User::where('email', $userEmail)->first();
-        $task->users()->attach($user);
+        $task = Task::find($taskId);
+        if (!$task) {
+            throw new \Exception('Task not found', 404);
+        }
+        $users = User::whereIn('email', $userEmail)->get();
+        foreach ($users as $user) {
+            if (!$task->users()->where('user_id', $user->id)->exists()) {
+                $task->users()->attach($user);
+            }
+        }
         return $task;
     }
 }
