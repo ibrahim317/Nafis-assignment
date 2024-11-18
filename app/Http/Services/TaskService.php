@@ -47,12 +47,8 @@ class TaskService
 
         return $query->get();
     }
-    public static function assignUserToTask($taskId, $userEmail)
+    public static function assignUserToTask($task, $userEmail)
     {
-        $task = Task::find($taskId);
-        if (!$task) {
-            throw new \Exception('Task not found', 404);
-        }
         $users = User::whereIn('email', $userEmail)->get();
         foreach ($users as $user) {
             if (!$task->users()->where('user_id', $user->id)->exists()) {

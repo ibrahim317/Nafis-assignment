@@ -9,11 +9,12 @@ use App\Http\Requests\AssignUserToTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Http\Services\TaskService;
+
 class TaskController
 {
     public function index()
     {
-        return Task::all();
+        return TaskResource::collection(Task::all());
     }
 
 
@@ -25,32 +26,27 @@ class TaskController
     }
 
 
-    public function show(string $id)
+    public function show(Task $task)
     {
-        return Task::findOrFail($id);
-    }
-
-
-    public function update(UpdateTaskRequest $request, string $id)
-    {
-        $task = TaskService::updateTask($request, $id);
-        return Task::findOrFail($id)->update($request->all());
-    }
-
-    public function destroy(string $id)
-    {
-        return Task::findOrFail($id)->delete();
-    }
-    public function assign(AssignUserToTaskRequest $request, string $taskId)
-    {
-        try {
-            $task = TaskService::assignUserToTask($taskId, $request->users_email);
-        } catch (\Exception $e) {
-            \Log::error($e->getMessage());
-            return response()->json(['error' => $e->getMessage()], );
-        }
         return TaskResource::make($task);
+    }
 
+
+    public function update(UpdateTaskRequest $request, Task $task)
+    {
+        $task = TaskService::updateTask($request, $task);
+        return TaskResource::make($task);
+    }
+
+    public function destroy(Task $task)
+    {
+        $task->delete();
+        return response()->json(['message' => 'Task deleted successfully'], 200);
+    }
+    public function assign(AssignUserToTaskRequest $request, Task $task)
+    {
+        $task = TaskService::assignUserToTask($task, $request->users_email);
+        return TaskResource::make($task);
     }
     public function filter(FilterTaskRequest $request)
     {

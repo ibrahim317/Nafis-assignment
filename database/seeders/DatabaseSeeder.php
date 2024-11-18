@@ -16,16 +16,18 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         Task::factory(10)->create();
 
-        User::factory()->create([
+        $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
-        Task::factory()->create([
+        $task = Task::factory()->create([
             'title' => 'Test Task',
             'description' => 'Test Description',
             'due_date' => now()->addDays(1),
             'status' => 'pending',
         ]);
+        // connect user to task
+        $task->users()->attach($user);
 
 
     }
