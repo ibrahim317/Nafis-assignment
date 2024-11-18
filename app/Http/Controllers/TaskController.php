@@ -2,52 +2,51 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskFilterRequest;
 use App\Http\Requests\TaskRequest;
-use Illuminate\Http\Request;
-
-class TaskController extends Controller
+use App\Models\Task;
+use App\Http\Requests\AsssignUserToTaskRequest;
+use App\Http\Resources\TaskResource;
+use App\Http\Services\TaskService;
+use App\Http\Resources\UserResource;
+class TaskController
 {
     public function index()
     {
-        //
+        return Task::all();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(TaskRequest $request)
     {
-        //
+        return Task::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(string $id)
     {
+        return Task::findOrFail($id);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(TaskRequest $request, string $id)
     {
-        //
+        return Task::findOrFail($id)->update($request->all());
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //
+        return Task::findOrFail($id)->delete();
     }
+    public function assign(AsssignUserToTaskRequest $request)
+    {
+        $task = TaskService::assignUserToTask($request->task_id, $request->user_email);
+        return TaskResource::make($task->load('users'));
+    }
+    public function filter(TaskFilterRequest $request)
+    {
+        $tasks = TaskService::filter($request);
+        return TaskResource::collection($tasks);
+    }
+
 }

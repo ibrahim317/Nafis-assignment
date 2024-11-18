@@ -14,6 +14,9 @@ class Task extends Model
         'due_date',
         'status',
     ];
+    protected $casts = [
+        'due_date' => 'datetime',
+    ];
     public function users()
     {
         return $this->belongsToMany(User::class);
