@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "65f9e2cb-4295-4a0e-b190-b4be34bc8044",
+		"_postman_id": "96d1859f-7938-49fe-b959-85e8d50e2af2",
 		"name": "Nafis-assignment",
 		"description": "API Documention for nafis technologies Back-end assigement",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -34,13 +34,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base-url}}/tasks/17",
+							"raw": "{{base-url}}/tasks/7",
 							"host": [
 								"{{base-url}}"
 							],
 							"path": [
 								"tasks",
-								"17"
+								"7"
 							]
 						},
 						"description": "get task by id"
@@ -235,7 +235,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"users_email\":[\n        \"adolphus.bernier@example.com\"\n    ]\n\n}",
+					"raw": "{\n    \"users_email\":[\n        \"test@example.com\"\n    ]\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
