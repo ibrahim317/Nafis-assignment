@@ -80,23 +80,27 @@
 ## Starting Services
 
 1. Clone the repository
-2. Install PHP dependencies:
+2. Run the database and mail services:
+    ```bash
+    docker compose up -d
+    ```
+4. Install PHP dependencies:
     ```bash
     composer install
     ```
-3. Copy .env.example to .env:
+5. Copy .env.example to .env:
     ```bash
     cp .env.example .env
     ```
-4. Generate application key:
+6. Generate application key:
     ```bash
     php artisan key:generate
     ```
-5. Run database migrations:
+7. Run database migrations:
     ```bash
     php artisan migrate --seed
     ```
-6. Start the development server:
+8. Start the development server:
     ```bash
     composer run dev
     ```
