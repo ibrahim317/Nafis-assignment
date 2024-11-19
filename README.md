@@ -131,7 +131,9 @@ This will concurrently run:
 
 ## API Documentation
 
-For API documentation, you can use the provided Postman collection. The collection file is named `Nafis-assigement.postman_collection.json`. You can import this file into Postman to explore and test the API endpoints.
+For API documentation, you can use the provided Postman collection.
+The collection file is named `Nafis-assigement.postman_collection.json`.
+You can import this file into Postman to explore and test the API endpoints.
 
 ## Running Tests
 
@@ -145,37 +147,9 @@ php artisan test
 
 # Run specific test file
 php artisan test --filter TaskCrudTest
-
-# Run tests in parallel
-php artisan test --parallel
 ```
-
-The test suite includes:
-
--   Unit tests
--   Feature tests
--   Integration tests
 
 Test files are located in the `tests` directory:
 
 -   `tests/Unit/` - Unit tests
 -   `tests/Feature/` - Feature tests
-
-### Test Database
-
-Tests use an in-memory SQLite database by default. Make sure your `.env.testing` file is configured correctly:
-
-```env
-DB_CONNECTION=sqlite
-DB_DATABASE=:memory:
-```
-
-### Generating Test Coverage Reports
-
-To generate test coverage reports, ensure you have Xdebug installed and enabled. Then run:
-
-```bash
-php artisan test --coverage-html reports/
-```
-
-This will generate an HTML coverage report in the `reports` directory.
