@@ -21,4 +21,10 @@ class Task extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    public function scopeShouldNotify($query)
+    {
+        return $query->where('reminder_sent', false)
+            ->whereNotNull('due_date')
+            ->whereBetween('due_date', [now(), now()->addHours(24)]);
+    }
 }

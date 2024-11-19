@@ -14,7 +14,9 @@ return new class extends Migration {
             $table->id();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->enum('status', ['pending', 'in_progress', 'completed', 'overdue'])->default('pending');
+            $table->enum('status', ['pending', 'in_progress', 'completed'])->default('pending');
+            $table->boolean('reminder_sent')->default(false);
+            $table->boolean('overdue')->default(false);
             $table->dateTime('due_date')->nullable();
             $table->timestamps();
         });

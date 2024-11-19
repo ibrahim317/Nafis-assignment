@@ -19,6 +19,7 @@ class TaskResource extends JsonResource
             'description' => $this->description,
             'status' => $this->status,
             'due_date' => $this->due_date->format('Y-m-d H:i:s'),
+            'overdue' => $this->overdue == 0 ? false : true,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'users' => UserResource::collection($this->whenLoaded('users')),

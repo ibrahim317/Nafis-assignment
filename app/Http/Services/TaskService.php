@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Requests\FilterTaskRequest;
 use App\Models\Task;
 use App\Models\User;
+use App\Notifications\TaskReminderNotification;
 
 class TaskService
 {
@@ -53,6 +54,9 @@ class TaskService
         foreach ($users as $user) {
             if (!$task->users()->where('user_id', $user->id)->exists()) {
                 $task->users()->attach($user);
+                if ($task->due_date->diffInHours(now()) <= 24) {
+                    $user->notify(new TaskReminderNotification($task));
+                }
             }
         }
         return $task;
