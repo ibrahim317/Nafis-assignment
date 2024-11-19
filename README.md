@@ -155,9 +155,10 @@ Now we have three services running:
 ### PHPUnit Testing
 
 Run tests:
-    ```bash
-    php artisan test
-    ```
+
+  ```bash
+   php artisan test
+  ```
 
 ## Additional Features
 
