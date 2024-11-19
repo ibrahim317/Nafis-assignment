@@ -120,7 +120,7 @@ php artisan key:generate
 5. Run migrations:
 
 ```bash
-php artisan migrate
+php artisan migrate --seed
 ```
 
 Now your development environment should be ready to run the Laravel application. You can start the development server using:
