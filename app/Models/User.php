@@ -21,9 +21,5 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Task::class);
     }
-    public function taskReminders()
-    {
-        return $this->hasMany(TaskReminder::class);
-    }
 
 }
