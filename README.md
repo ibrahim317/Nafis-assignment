@@ -1,160 +1,192 @@
-# Prerequisites Installation Guide
+# Task Management Application Documentation (Nafis Assignment)
 
-## System Requirements
+## Table of Contents
+
+-   [Prerequisites Installation Guide](#prerequisites-installation-guide)
+    -   [Linux Installation Guide](#linux-installation-guide)
+    -   [Mac Installation Guide](#mac-installation-guide)
+    -   [Windows Installation Guide](#windows-installation-guide)
+-   [Starting Services](#starting-services)
+-   [Application Configurations](#application-configurations)
+-   [Testing](#testing)
+-   [Additional Features](#additional-features)
+-   [Development Commands](#development-commands)
+-   [Default Test Credentials](#default-test-credentials)
+
+## Prerequisites Installation Guide
+
+### System Requirements
 
 -   PHP 8.2 or higher
--   Composer (Latest version)
--   Docker & Docker Compose
--   Node.js (Latest LTS version)
--   MySQL PHP Extensions
--   Other PHP Extensions
+-   Composer
+-   Node.js & NPM
+-   Docker
 
-## Installation Steps
+### Linux Installation Guide
 
-### 1. PHP Installation
+1. Update package manager:
+    ```bash
+    sudo apt update
+    ```
+2. Install PHP and required extensions:
+    ```bash
+    sudo apt install php8.2 php8.2-mysql php8.2-xml php8.2-curl
+    ```
+3. Install Composer:
+    ```bash
+    curl -sS https://getcomposer.org/installer | php
+    sudo mv composer.phar /usr/local/bin/composer
+    ```
+4. Install Docker:
+    - For Ubuntu, follow the instructions at [Docker Ubuntu Installation Guide](https://docs.docker.com/engine/install/ubuntu/)
 
-#### For Ubuntu/Debian:
+### Mac Installation Guide
 
-```bash
-sudo apt update
-sudo apt install php8.2 php8.2-cli php8.2-common php8.2-mysql php8.2-zip php8.2-gd php8.2-mbstring php8.2-curl php8.2-xml php8.2-bcmath
-```
+1. Install Homebrew if not installed:
+    ```bash
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    ```
+2. Install PHP:
+    ```bash
+    brew install php@8.2
+    ```
+3. Install Composer:
+    ```bash
+    brew install composer
+    ```
+4. Install Docker:
+    - For Mac, follow the instructions at [Docker Mac Installation Guide](https://docs.docker.com/desktop/mac/install/)
 
-#### For macOS:
+### Windows Installation Guide
 
-```bash
-brew install php@8.2
-```
+1. Download and install PHP from [php.net](https://windows.php.net/download/)
+2. Enable required extensions in `php.ini` file
+3. Download and install Composer from [getcomposer.org](https://getcomposer.org/download/)
+4. Add PHP and Composer to system PATH
+5. Install Docker:
+    - For Windows, follow the instructions at [Docker Windows Installation Guide](https://docs.docker.com/desktop/windows/install/)
 
-#### For Windows:
+### Installation Verification
 
--   Download PHP 8.2 from [windows.php.net](https://windows.php.net/download/)
--   Add PHP to your system's PATH
+1. Verify PHP installation:
+    ```bash
+    php -v
+    ```
+2. Verify Composer installation:
+    ```bash
+    composer -V
+    ```
 
-### 2. Composer Installation
+## Starting Services
 
-#### For Unix-based systems (Linux/macOS):
-
-```bash
-php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-php composer-setup.php
-sudo mv composer.phar /usr/local/bin/composer
-```
-
-#### For Windows:
-
--   Download and run the Composer installer from [getcomposer.org](https://getcomposer.org/download/)
-
-### 3. Docker Installation
-
-For detailed installation instructions, please refer to the official Docker documentation:
-
--   [Docker Installation for Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
--   [Docker Desktop for macOS](https://www.docker.com/products/docker-desktop)
--   [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop)
-
-### 4. Node.js Installation
-
-#### Using NVM (recommended):
-
-```bash
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash
-nvm install --lts
-```
-
-#### Direct installation:
-
--   Download and install from [nodejs.org](https://nodejs.org/)
-
-## Verification
-
-Verify your installations by running:
-
-```bash
-php -v                # Should show PHP 8.2.x
-composer -V           # Should show Composer version
-docker -v            # Should show Docker version
-node -v              # Should show Node.js version
-npm -v               # Should show npm version
-```
-
-## Starting the Services
-
-1. Start Docker services:
-
-```bash
-docker compose up -d
-```
-
-This will start:
-
--   MySQL server on port 3307
--   MailHog for email testing on ports 8025 (web interface) and 1025 (SMTP server)
-
-## Additional Configuration
-
-1. Copy the environment file:
-
-```bash
-cp .env.example .env
-```
-
+1. Clone the repository
 2. Install PHP dependencies:
-
-```bash
-composer install
-```
-
-3. Install Node.js dependencies:
-
-```bash
-npm install
-```
-
+    ```bash
+    composer install
+    ```
+3. Copy .env.example to .env:
+    ```bash
+    cp .env.example .env
+    ```
 4. Generate application key:
+    ```bash
+    php artisan key:generate
+    ```
+5. Run database migrations:
+    ```bash
+    php artisan migrate --seed
+    ```
+6. Start the development server:
+    ```bash
+    composer run dev
+    ```
 
-```bash
-php artisan key:generate
-```
+## Application Configurations
 
-5. Run migrations:
+1. Database Configuration:
 
-```bash
-php artisan migrate --seed
-```
+    When you run docker compose, it sets up the database according to the `compose.yml` file. The Laravel application then connects to this database using the settings specified in the `.env` file:
 
-Now your development environment should be ready to run the Laravel application. You can start the development server using:
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3307
+    DB_DATABASE=task_management
+    DB_USERNAME=root
+    DB_PASSWORD=rootpassword
+    ```
 
-```bash
-composer run dev
-```
+    > **Note:**
+    > You are free to use your own database, without docker compose, but make sure to update the `.env` file with the correct database settings.
 
-This will concurrently run:
+2. Application Settings:
+    - Application Name: Configure in .env with APP_NAME
+    - Timezone: Set in .env with APP_TIMEZONE (default: UTC)
+    - Debug Mode: Toggle in .env with APP_DEBUG
+    - Application URL: Set in .env with APP_URL
 
--   Laravel server
--   Schedule worker
+## Testing
 
-## API Documentation
+### API Testing (Postman Collection)
 
-For API documentation, you can use the provided Postman collection.
-The collection file is named `Nafis-assigement.postman_collection.json`.
-You can import this file into Postman to explore and test the API endpoints.
+1. Import the Postman collection `Nafis-assignment.postman_collection.json`
+2. Available API endpoints:
+    - Task List
+    - Task Details
+    - Task Creation
+    - Task Updates
+    - Task Deletion
+    - Task Filtering
+    - Task Assignment
+    - User Tasks
 
-## Running Tests
+### PHPUnit Testing
 
-### PHPUnit Tests
+1. Configure testing database in .env.testing
+2. Run tests:
+    ```bash
+    php artisan test
+    ```
 
-To run the automated test suite:
+## Additional Features
 
-```bash
-# Run all tests
-php artisan test
+### Task Management
 
-# Run specific test file
-php artisan test --filter TaskCrudTest
-```
+-   Create tasks with title, description, and due date
+-   Assign tasks to users
+-   Filter tasks by status and date range
+-   Automatic overdue task marking
+-   Task reminder notifications
 
-Test files are located in the `tests` directory:
+### Composer Command
 
--   `tests/Unit/` - Unit tests
--   `tests/Feature/` - Feature tests
+By running `composer run dev`, the following tasks will be handled automatically:
+
+-   Starting the Laravel development server
+-   Starting the scheduler in the background which will handle the following tasks:
+    -   Marking overdue tasks
+-   Sending notifications to users
+
+### Available Task Statuses
+
+-   pending
+-   in_progress
+-   completed
+
+## Development Commands
+
+1. Notify users about tasks due soon manually:
+
+    ```bash
+    php artisan notify-users
+    ```
+
+2. Run the task overdue checker manually:
+    ```bash
+    php artisan mark-overdue
+    ```
+
+## Default Test Credentials
+
+-   Email: test@example.com
+-   Name: Test User
