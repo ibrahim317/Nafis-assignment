@@ -154,8 +154,7 @@ Now we have three services running:
 
 ### PHPUnit Testing
 
-1. Configure testing database in .env.testing
-2. Run tests:
+Run tests:
     ```bash
     php artisan test
     ```
