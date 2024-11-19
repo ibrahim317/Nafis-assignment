@@ -27,12 +27,13 @@ class TaskCrudTest extends TestCase
     }
     public function test_can_get_all_tasks()
     {
-        Task::factory()->count(3)->create();
+        Task::factory(3)->create();
 
         $response = $this->getJson('/api/tasks');
 
         $response->assertStatus(200)
-            ->assertJsonCount(4); // 3 + 1 from setUp
+            ->assertJsonStructure(['data'])
+            ->assertJsonCount(4, 'data'); // 3 + 1 from setUp
     }
 
     public function test_can_create_task()

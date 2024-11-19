@@ -42,7 +42,7 @@ class UserTaskTest extends TestCase
         $tasks = Task::factory()->count(3)->create();
         $this->user->tasks()->attach($tasks->pluck('id'));
 
-        $response = $this->getJson("/api/users/{$this->user->id}/tasks");
+        $response = $this->getJson("/api/users/tasks?email={$this->user->email}");
 
         $response->assertStatus(200)
             ->assertJsonCount(3, 'data');

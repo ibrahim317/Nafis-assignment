@@ -19,9 +19,8 @@ class TaskService
         $task->save();
         return $task;
     }
-    public static function updateTask($request, $id)
+    public static function updateTask($request, $task)
     {
-        $task = Task::findOrFail($id);
         $task->title = $request->title ?? $task->title;
         $task->description = $request->description ?? $task->description;
         $task->due_date = $request->due_date ?? $task->due_date;
