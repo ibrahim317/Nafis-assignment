@@ -117,6 +117,12 @@ npm install
 php artisan key:generate
 ```
 
+5. Run migrations:
+
+```bash
+php artisan migrate
+```
+
 Now your development environment should be ready to run the Laravel application. You can start the development server using:
 
 ```bash
