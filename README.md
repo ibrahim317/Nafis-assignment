@@ -104,11 +104,14 @@
     ```bash
     composer run dev
     ```
-
-   Now we have three services running:
+Now we have three services running:
    1. Laravel application:``http://127.0.0.1:8000``
-   2. Database server on port ``3307`` (Not 3306 due to not conflict with database services running on the host machine)
-   3. Mail web interface on ``http://localhost:8025``  
+   2. Database server on port ``3307``
+      
+       > **Note:**
+       > Not 3306 to not conflict with database services running on the host machine
+       
+   4. Mail web interface on ``http://localhost:8025``  
 
 ## Application Configurations
 
