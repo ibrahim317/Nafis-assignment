@@ -74,7 +74,6 @@ Verify your installations by running:
 php -v                # Should show PHP 8.2.x
 composer -V           # Should show Composer version
 docker -v            # Should show Docker version
-docker-compose -v    # Should show Docker Compose version
 node -v              # Should show Node.js version
 npm -v               # Should show npm version
 ```
